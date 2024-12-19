@@ -1,6 +1,5 @@
 import os
 import clip
-from clip import model
 import tqdm
 from PIL import Image
 import torch
@@ -97,7 +96,7 @@ def convert_models_to_fp32(input_model):
 
 # use your own data
 EPOCH = 1000
-BATCH_SIZE = 96
+BATCH_SIZE = 48
 img_folder = r"D:\Projects\CLIP-train\datasets\part-images"
 txt_folder = r"D:\Projects\CLIP-train\datasets\part-images\labels.txt"
 img_dic = {0: "pincer plier",  1: "snipe-nose plier", 2: "flat-head screwdriver", 3: "Phillips head screwdriver",
@@ -132,7 +131,7 @@ total_loss = 0
 previous_loss = float("inf")
 
 # add your own code to track the training progress.
-for epoch in tqdm(range(EPOCH)):
+for epoch in range(EPOCH):
     print("Epoch {}/{}".format(epoch, EPOCH - 1))
     for batch in train_dataloader:
         optimizer.zero_grad()

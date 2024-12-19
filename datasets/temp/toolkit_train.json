@@ -1,0 +1,98 @@
+[
+  {
+    "image": "D:\Projects\CLIP-train\datasets\toolkit-images\screwdriver_1.jpg",
+    "caption": [
+      "The image displays a pair of screwdrivers with insulated handles placed diagonally across a dark background. On the top right, angled towards the bottom left, is a flat-head screwdriver with a yellow and red handle, marked \"YINGJIS\". Directly above, aligned in the same direction, is its counterpart, a Phillips screwdriver with a similar design and color scheme."
+    ]
+  },
+  {
+    "image": "D:\Projects\CLIP-train\datasets\toolkit-images\screwdriver_2.jpg",
+    "caption": [
+      "A Flathead screwdriver with an ergonomic handle.",
+      "A durable Flathead screwdriver with a high grip handle.",
+      "This is a Flathead screwdriver suitable for various screw types.",
+      "A Flathead screwdriver designed for precision and comfort.",
+      "An industrial-grade Flathead screwdriver."
+    ]
+  },
+  {
+    "image": "D:\Projects\CLIP-train\datasets\toolkit-images\screwdriver_3.jpg",
+    "caption": [
+      "A Flathead screwdriver with an ergonomic handle.",
+      "A durable Flathead screwdriver with a high grip handle.",
+      "This is a Flathead screwdriver suitable for various screw types.",
+      "A Flathead screwdriver designed for precision and comfort.",
+      "An industrial-grade Flathead screwdriver."
+    ]
+  },
+  {
+    "image": "D:\Projects\CLIP-train\datasets\toolkit-images\screwdriver_4.jpg",
+    "caption": [
+      "A Flathead screwdriver with an ergonomic handle.",
+      "A durable Flathead screwdriver with a high grip handle.",
+      "This is a Flathead screwdriver suitable for various screw types.",
+      "A Flathead screwdriver designed for precision and comfort.",
+      "An industrial-grade Flathead screwdriver."
+    ]
+  },
+  {
+    "image": "D:\Projects\CLIP-train\datasets\toolkit-images\screwdriver_5.jpg",
+    "caption": [
+      "A Flathead screwdriver with an ergonomic handle.",
+      "A durable Flathead screwdriver with a high grip handle.",
+      "This is a Flathead screwdriver suitable for various screw types.",
+      "A Flathead screwdriver designed for precision and comfort.",
+      "An industrial-grade Flathead screwdriver."
+    ]
+  },
+  {
+    "image": "D:\Projects\CLIP-train\datasets\toolkit-images\screwdriver_6.jpg",
+    "caption": [
+      "A Flathead screwdriver with an ergonomic handle.",
+      "A durable Flathead screwdriver with a high grip handle.",
+      "This is a Flathead screwdriver suitable for various screw types.",
+      "A Flathead screwdriver designed for precision and comfort.",
+      "An industrial-grade Flathead screwdriver."
+    ]
+  },
+  {
+    "image": "D:\Projects\CLIP-train\datasets\toolkit-images\screwdriver_7.jpg",
+    "caption": [
+      "A Flathead screwdriver with an ergonomic handle.",
+      "A durable Flathead screwdriver with a high grip handle.",
+      "This is a Flathead screwdriver suitable for various screw types.",
+      "A Flathead screwdriver designed for precision and comfort.",
+      "An industrial-grade Flathead screwdriver."
+    ]
+  },
+  {
+    "image": "D:\Projects\CLIP-train\datasets\toolkit-images\screwdriver_8.jpg",
+    "caption": [
+      "A Flathead screwdriver with an ergonomic handle.",
+      "A durable Flathead screwdriver with a high grip handle.",
+      "This is a Flathead screwdriver suitable for various screw types.",
+      "A Flathead screwdriver designed for precision and comfort.",
+      "An industrial-grade Flathead screwdriver."
+    ]
+  },
+  {
+    "image": "D:\Projects\CLIP-train\datasets\toolkit-images\screwdriver_9.jpg",
+    "caption": [
+      "A Flathead screwdriver with an ergonomic handle.",
+      "A durable Flathead screwdriver with a high grip handle.",
+      "This is a Flathead screwdriver suitable for various screw types.",
+      "A Flathead screwdriver designed for precision and comfort.",
+      "An industrial-grade Flathead screwdriver."
+    ]
+  },
+  {
+    "image": "D:\Projects\CLIP-train\datasets\toolkit-images\screwdriver_10.jpg",
+    "caption": [
+      "A Flathead screwdriver with an ergonomic handle.",
+      "A durable Flathead screwdriver with a high grip handle.",
+      "This is a Flathead screwdriver suitable for various screw types.",
+      "A Flathead screwdriver designed for precision and comfort.",
+      "An industrial-grade Flathead screwdriver."
+    ]
+  }
+]

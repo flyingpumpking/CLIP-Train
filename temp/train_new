@@ -1,0 +1,117 @@
+import os
+from PIL import Image
+import numpy as np
+import clip
+import preprocess
+from loguru import logger
+import torch
+from torch.utils.data import Dataset, DataLoader, ConcatDataset
+import torch.optim as optim
+from torch.optim import lr_scheduler
+import torch.nn as nn
+
+
+class YourDataset(Dataset):
+    def __init__(self, img_root, label_file, preprocess):
+        # 1.根目录和标签文件
+        self.img_root = img_root
+        self.label_file = label_file
+        # 2.图像处理
+        self.img_process = preprocess
+        # 3.工具字典
+        self.img_dic = {0: "pincer plier", 1: "snipe-nose plier", 2: "flat-head screwdriver",
+                        3: "Phillips head screwdriver", 4: "head of flat-head screwdriver",
+                        5: "head of Phillips head screwdriver", 6: "hammer", 7: "wrench",
+                        8: "screw", 9: "nut", 10: "Allen wrench", 11: "gasket", 12: "cold-pressed nut"}
+
+        # 4.初始化样本
+        self.samples = []
+        self.sam_labels = []
+
+        # 5. 读取标签文件并解析数据
+        with open(self.label_file, 'r') as f:
+            for line in f:
+                # 获取图像文件名和对应的标签
+                img_name, label_idx = line.strip().split()
+                img_path = os.path.join(self.img_root, img_name)
+                label = "photo of " + self.img_dic[int(label_idx)]  # 根据字典映射标签
+                self.samples.append(img_path)
+                self.sam_labels.append(label)
+
+        # 转换为 token
+        self.tokens = clip.tokenize(self.sam_labels)
+
+    def __len__(self):
+        return len(self.samples)
+
+    def __getitem__(self, idx):
+        img_path = self.samples[idx]
+        token = self.tokens[idx]
+        # 加载图像
+        image = Image.open(img_path).convert('RGB')
+        # 对图像进行预处理
+        image = self.img_process(image)
+        return image, token
+
+
+# 使用新的数据集路径和标签文件
+your_dataset = YourDataset(img_root=r"D:\Projects\CLIP-train\datasets\part-images",
+                           label_file=r"D:\Projects\CLIP-train\datasets\part-images\labels.txt",
+                           preprocess=preprocess)
+your_dataloader = DataLoader(your_dataset, batch_size=4, shuffle=True, num_workers=4, pin_memory=False)
+
+device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+net, preprocess = clip.load("ViT-B/16", device=device, jit=False)
+
+optimizer = optim.Adam(net.parameters(), lr=1e-6, betas=(0.9, 0.98), eps=1e-6, weight_decay=0.001)
+scheduler = lr_scheduler.StepLR(
+    optimizer, step_size=10, gamma=0.1)
+
+# 创建损失函数
+loss_img = nn.CrossEntropyLoss()
+loss_txt = nn.CrossEntropyLoss()
+
+phase = "train"
+model_name = "your model name"
+ckt_gap = 4
+for epoch in range(0, 100):
+    scheduler.step()
+    total_loss = 0
+    batch_num = 0
+    # 使用混合精度，占用显存更小
+    with torch.cuda.amp.autocast(enabled=True):
+        for images, label_tokens in your_dataloader:
+            # 将图片和标签token转移到device设备
+            images = images.to(device)
+            label_tokens = label_tokens.to(device)
+            batch_num += 1
+            # 优化器梯度清零
+            optimizer.zero_grad()
+            with torch.set_grad_enabled(phase == "train"):
+                logits_per_image, logits_per_text = net(images, label_tokens)
+                ground_truth = torch.arange(len(images), dtype=torch.long, device=device)
+                cur_loss = (loss_img(logits_per_image, ground_truth) + loss_txt(logits_per_text, ground_truth)) / 2
+                total_loss += cur_loss
+                if phase == "train":
+                    cur_loss.backward()
+                    if device == "cpu":
+                        optimizer.step()
+                    else:
+                        optimizer.step()
+                        clip.model.convert_weights(net)
+            if batch_num % 4 == 0:
+                logger.info('{} epoch:{} loss:{}'.format(phase, epoch, cur_loss))
+        epoch_loss = total_loss / len(your_dataset)
+        torch.save(net.state_dict(), f"{model_name}_epoch_{epoch}.pth")
+        logger.info(f"weights_{epoch} saved")
+        if epoch % ckt_gap == 0:
+            checkpoint_path = f"{model_name}_ckt.pth"
+            checkpoint = {
+                'it': epoch,
+                'network': net.state_dict(),
+                'optimizer': optimizer.state_dict(),
+                'scheduler': scheduler.state_dict()}
+            torch.save(checkpoint, checkpoint_path)
+            logger.info(f"checkpoint_{epoch} saved")
+        logger.info('{} Loss: {:.4f}'.format(
+            phase, epoch_loss))
